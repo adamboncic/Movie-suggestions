@@ -1,4 +1,3 @@
-// src/stores/movieStore.js
 import { defineStore } from 'pinia';
 import tmdbApi from '@/services/tmdbApi';
 import { useAuthStore } from './authStore';
@@ -29,6 +28,9 @@ export const useMovieStore = defineStore('movie', {
         }
         const response = await tmdbApi.searchMovies(query);
         this.searchResults = response.data.results;
+        if (!this.searchResults.length) {
+           this.error = 'No results found. Please try again.';
+        }
       } catch (error) {
         this.error = 'Error searching movies. Please try again.';
         console.error('Error searching movies:', error);
