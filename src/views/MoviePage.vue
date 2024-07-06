@@ -1,0 +1,44 @@
+<template>
+  <v-container>
+    <MovieDetails />
+    <DirectorFilmography />
+  </v-container>
+</template>
+
+<script>
+import MovieDetails from '@/components/MovieDetails.vue';
+import DirectorFilmography from '@/components/DirectorFilmography.vue';
+import { useMovieStore } from '@/stores/movieStore';
+import { onMounted, watch } from 'vue';
+import { useRoute } from 'vue-router';
+
+export default {
+  components: {
+    MovieDetails,
+    DirectorFilmography
+  },
+  setup() {
+    const movieStore = useMovieStore();
+    const route = useRoute();
+
+    const fetchMovieData = async (id) => {
+      await movieStore.fetchMovieDetails(id);
+      await Promise.all([
+        movieStore.fetchSimilarMovies(id),
+        movieStore.fetchDirectorFilmography(id)
+      ]);
+    };
+
+    onMounted(() => {
+      fetchMovieData(route.params.id);
+    });
+
+    // Watch for route changes to update the movie when navigating between movie pages
+    watch(() => route.params.id, (newId) => {
+      fetchMovieData(newId);
+    });
+
+    return { movieStore };
+  }
+}
+</script>
