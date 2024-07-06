@@ -8,8 +8,8 @@ export const useMovieStore = defineStore('movie', {
     selectedMovie: null,
     similarMovies: [],
     directorFilmography: [],
+    director: null,
     searchResults: [],
-    favoriteMovies: [],
     genres: [],
     loading: false,
     error: null,
@@ -43,6 +43,7 @@ export const useMovieStore = defineStore('movie', {
       this.selectedMovie = null;
       this.similarMovies =[];
       this.directorFilmography = [];
+      this.director = null;
     },
 
     async setSelectedMovie(movie) {
@@ -58,24 +59,32 @@ export const useMovieStore = defineStore('movie', {
       this.error = null;
       this.similarMovies = [];
 
-      try { 
-        // Fetch first page
+      try {
         const firstPageResponse = await tmdbApi.getSimilarMovies(movieId, 1);
-        
-        if (firstPageResponse.data.total_results > 0) {
-          if (firstPageResponse.data.results.length > 0) {
-            // Results found on the first page
-            this.similarMovies = firstPageResponse.data.results.slice(0, 25);
-          } else if (firstPageResponse.data.total_results > 1) {
-            // No results on first page, but total pages > 1, so check second page
-            const secondPageResponse = await tmdbApi.getSimilarMovies(movieId, 2);
-            this.similarMovies = secondPageResponse.data.results.slice(0, 25);
-          }
+        const { results, total_pages, total_results } = firstPageResponse.data;
+
+        if (total_results === 0) {
+          this.error = 'No similar movies found. Please try another.';
+          return;
         }
 
-        if (this.similarMovies.length === 0) {
-          this.error = 'No similar movies found. Please try another.';
-        }
+        this.similarMovies = results;
+
+        const maxPages = Math.min(total_pages, 5);  // Limit to 5 pages
+        const remainingPages = Array.from({ length: maxPages - 1 }, (_, i) => i + 2);
+
+        const remainingPagesPromises = remainingPages.map(page => 
+          tmdbApi.getSimilarMovies(movieId, page)
+        );
+
+        const responses = await Promise.all(remainingPagesPromises);
+        
+        responses.forEach(response => {
+          this.similarMovies.push(...response.data.results);
+        });
+
+        this.similarMovies.sort((a, b) => b.popularity - a.popularity);
+
       } catch (error) {
         this.error = 'Error fetching similar movies. Please try again.';
         console.error('Error fetching similar movies:', error);
@@ -103,6 +112,7 @@ export const useMovieStore = defineStore('movie', {
       const director = movieCredits.data.crew.find(person => person.job === 'Director');
       
       if (director) {
+        this.director = director;
         // Then, get the person's movie credits
         const personCredits = await tmdbApi.getPersonMovieCredits(director.id);
         this.directorFilmography = personCredits.data.crew
@@ -110,6 +120,7 @@ export const useMovieStore = defineStore('movie', {
           .sort((a, b) => b.popularity - a.popularity);
       } else {
         this.directorFilmography = [];
+        this.director = null;
         console.log('No director found for this movie');
       }
     } catch (error) {
@@ -134,37 +145,6 @@ export const useMovieStore = defineStore('movie', {
       }
     },
 
-    toggleFavorite(movie) {
-      const authStore = useAuthStore();
-      if (!authStore.user) return;
-
-      const index = this.favoriteMovies.findIndex(m => m.id === movie.id);
-      if (index > -1) {
-        this.favoriteMovies.splice(index, 1);
-      } else {
-        this.favoriteMovies.push(movie);
-      }
-      // Here you would typically also update this on your backend
-    },
-
-    async fetchFavorites() {
-      const authStore = useAuthStore();
-      if (!authStore.user) return;
-
-      this.loading = true;
-      this.error = null;
-      try {
-        // This is a placeholder. In a real app, you'd fetch favorites from your backend
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        this.favoriteMovies = []; // Set to empty array for now
-      } catch (error) {
-        this.error = 'Error fetching favorites. Please try again.';
-        console.error('Error fetching favorites:', error);
-      } finally {
-        this.loading = false;
-      }
-    }
   },
 
   getters: {
@@ -174,8 +154,5 @@ export const useMovieStore = defineStore('movie', {
         return acc;
       }, {});
     },
-    isFavorite: (state) => (movieId) => {
-      return state.favoriteMovies.some(movie => movie.id === movieId);
-    }
   }
 });

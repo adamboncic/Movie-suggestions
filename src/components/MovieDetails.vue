@@ -2,11 +2,10 @@
   <v-container v-if="movie" class="movie-details">
     <v-btn 
       @click="goBack" 
-      class="mb-4 back-button" 
-      color="grey lighten-3" 
+      class="back-button" 
       prepend-icon="mdi-arrow-left"
     >
-      Back to Search
+      Back
     </v-btn>
     
     <v-row>
@@ -29,7 +28,7 @@
         </div>
         <div class="movie-rating">
           <v-icon color="amber">mdi-star</v-icon>
-          <span>{{ movie.vote_average }} / 10</span>
+          <span>{{ formatRating(movie.vote_average) }}</span>
         </div>
         <p class="movie-overview">{{ movie.overview }}</p>
         <div class="movie-crew" v-if="director">
@@ -61,6 +60,7 @@ import { useMovieStore } from '@/stores/movieStore';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { formatDate, formatRating } from '@/utils/formatters';
 
 export default {
   setup() {
@@ -76,21 +76,19 @@ export default {
       return movie.value?.credits?.cast || [];
     });
 
-    const formatDate = (dateString) => {
-      if (!dateString) return '';
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-    };
-
     const goBack = () => {
+      movieStore.clearSearch();
       router.go(-1);
     };
 
-    onMounted(() => {
-      window.scrollTo(0, 0);
-    });
-
-    return { movie, director, cast, formatDate, goBack };
+    return {
+      movie,
+      director,
+      cast,
+      formatDate,
+      formatRating,
+      goBack
+    };
   }
 }
 </script>
@@ -98,11 +96,14 @@ export default {
 <style scoped>
 .movie-details {
   max-width: 1200px;
-  margin: 0 auto;
+  padding-bottom: 50px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid;
 }
 
 .back-button {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  background-color: #5b5b5bb8;
 }
 
 .movie-poster {

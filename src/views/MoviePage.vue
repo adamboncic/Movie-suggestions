@@ -33,7 +33,6 @@ export default {
       fetchMovieData(route.params.id);
     });
 
-    // Watch for route changes to update the movie when navigating between movie pages
     watch(() => route.params.id, (newId) => {
       fetchMovieData(newId);
     });

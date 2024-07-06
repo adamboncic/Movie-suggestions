@@ -14,11 +14,6 @@ const routes = [
     component: MoviePage,
     props: true
   },
-  {
-    path: '/favorites',
-    name: 'Favorites',
-    component: () => import('@/views/Favorites.vue')  // Lazy-loaded
-  }
   // ...
 ]
 
