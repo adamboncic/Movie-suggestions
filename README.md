@@ -1,6 +1,6 @@
 # In The Mood
 
-A Vue 3 appl that helps users discover movies based on their preferences. Enter a movie you like, and the app will suggest similar films you might enjoy.
+A Vue 3 app that helps users discover movies based on their preferences. Enter a movie you like, and the app will suggest similar films you might enjoy.
 
 ## Technologies Used
 
