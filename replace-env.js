@@ -16,4 +16,4 @@ files.forEach(file => {
     content = content.replace('__ACCESS_TOKEN__', process.env.VITE_TMDB_ACCESS_TOKEN);
     fs.writeFileSync(filePath, content);
   }
-});
+}); 
