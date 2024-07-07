@@ -5,6 +5,7 @@ import { useAuthStore } from './authStore';
 export const useMovieStore = defineStore('movie', {
   state: () => ({
     selectedMovie: null,
+    selectedMovieDetails: null,
     similarMovies: [],
     directorFilmography: [],
     director: null,
@@ -21,6 +22,7 @@ export const useMovieStore = defineStore('movie', {
       this.error = null;
       this.hasSearched = true;
       try {
+        console.log(query)
         if (!query || query.trim() === '') {
           this.searchResults = [];
           this.hasSearched = false;
@@ -43,6 +45,7 @@ export const useMovieStore = defineStore('movie', {
       this.searchResults = [];
       this.hasSearched = false;
       this.selectedMovie = null;
+      this.selectedMovieDetails = null;
       this.similarMovies =[];
       this.directorFilmography = [];
       this.director = null;
@@ -52,7 +55,6 @@ export const useMovieStore = defineStore('movie', {
       this.selectedMovie = movie;
       await Promise.all([
         this.fetchSimilarMovies(movie.id),
-        this.fetchDirectorFilmography(movie.id)
       ]);
     },
 
@@ -62,6 +64,8 @@ export const useMovieStore = defineStore('movie', {
       this.similarMovies = [];
 
       try {
+        let moviesArr = [];
+
         const firstPageResponse = await tmdbApi.getSimilarMovies(movieId, 1);
         const { results, total_pages, total_results } = firstPageResponse.data;
 
@@ -70,7 +74,7 @@ export const useMovieStore = defineStore('movie', {
           return;
         }
 
-        this.similarMovies = results;
+        moviesArr = results;
 
         const maxPages = Math.min(total_pages, 5);  // Limit to 5 pages
         const remainingPages = Array.from({ length: maxPages - 1 }, (_, i) => i + 2);
@@ -82,10 +86,12 @@ export const useMovieStore = defineStore('movie', {
         const responses = await Promise.all(remainingPagesPromises);
         
         responses.forEach(response => {
-          this.similarMovies.push(...response.data.results);
+          moviesArr.push(...response.data.results);
         });
 
-        this.similarMovies.sort((a, b) => b.popularity - a.popularity);
+        moviesArr.sort((a, b) => b.popularity - a.popularity);
+
+        this.similarMovies = moviesArr;
 
       } catch (error) {
         this.error = 'Error fetching similar movies. Please try again.';
@@ -136,9 +142,10 @@ export const useMovieStore = defineStore('movie', {
     async fetchMovieDetails(movieId) {
       this.loading = true;
       this.error = null;
+      //this.selectedMovieDetails = null
       try {
         const response = await tmdbApi.getMovieDetails(movieId);
-        this.selectedMovie = response.data;
+        this.selectedMovieDetails = response.data;
       } catch (error) {
         this.error = 'Error fetching movie details. Please try again.';
         console.error('Error fetching movie details:', error);

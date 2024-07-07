@@ -24,7 +24,6 @@ export default {
     const fetchMovieData = async (id) => {
       await movieStore.fetchMovieDetails(id);
       await Promise.all([
-        movieStore.fetchSimilarMovies(id),
         movieStore.fetchDirectorFilmography(id)
       ]);
     };

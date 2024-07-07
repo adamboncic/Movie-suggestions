@@ -71,10 +71,24 @@ export default {
 </script>
 
 <style>
+/* General */
+.v-container--fluid {
+  padding: 0;
+}
 .v-container .v-card {
   padding-bottom: 10px;
 }
 
+/* Loading */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+}
+
+/* Fade transitions */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;
@@ -85,11 +99,41 @@ export default {
   opacity: 0;
 }
 
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 9999;
+.fade-up-enter-active,
+.fade-up-leave-active {
+  transition: all 0.3s ease;
+}
+
+.fade-up-enter-from,
+.fade-up-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.fade-move-down-enter-active,
+.fade-move-down-leave-active,
+.fade-up-enter-active,
+.fade-up-leave-active {
+  transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  max-height: 1000px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-move-down-enter-from,
+.fade-move-down-leave-to,
+.fade-up-enter-from,
+.fade-up-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+
+.fade-move-down-enter-from,
+.fade-move-down-leave-to {
+  transform: translateY(-30px);
+}
+
+.fade-up-enter-from,
+.fade-up-leave-to {
+  transform: translateY(30px);
 }
 </style>
