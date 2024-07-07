@@ -16,13 +16,11 @@ A Vue 3 app that helps users discover movies based on their preferences. Enter a
 1. Clone the repository
 2. Install dependencies:
 
-## Project Setup
-
 ```sh
 npm install
 ```
 
-## Start Server
+3. Start the development server:
 ```sh
 npm run dev
 ```
@@ -33,12 +31,3 @@ npm run dev
 - `npm run build`: Build for production
 - `npm run test:unit`: Run unit tests
 - `npm run lint`: Lint the code
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is open source and available under the [MIT License](LICENSE).
-```
