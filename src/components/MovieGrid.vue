@@ -1,6 +1,6 @@
 <template>
   <div class="movie-grid-container" v-if="visibleMovies.length > 0">
-    <h2 v-html="headerText"></h2>
+    <h2 class="mb-2" v-html="headerText"></h2>
     <v-container fluid>
       <v-row>
         <v-col v-for="movie in visibleMovies" :key="movie.id" cols="12" sm="6" md="4" lg="3">

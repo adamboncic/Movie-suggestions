@@ -51,9 +51,9 @@ export default {
 
     const headerText = computed(() => {
       if (movieStore.selectedMovie) {
-        return `Similar Movies to <em>"${movieStore.selectedMovie.title}"</em>`;
+        return `Similar movies to <em>"${movieStore.selectedMovie.title}"</em>:`;
       }
-      return 'Similar Movies';
+      return 'Similar movies:';
     });
 
     const onSearch = () => {

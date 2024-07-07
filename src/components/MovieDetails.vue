@@ -41,9 +41,8 @@
           type="article"
         ></v-skeleton-loader>
         <template v-else-if="movie">
-          <h1 class="movie-title">{{ movie.title }}</h1>
+          <h1 class="movie-title">{{ movie.title }} {{ formatDate(movie.release_date) }}</h1>
           <div class="movie-meta">
-            <span>{{ formatDate(movie.release_date) }}</span>
             <v-chip
               v-for="genre in movie.genres"
               :key="genre.id"
@@ -174,7 +173,6 @@ export default {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem;
   margin-bottom: 1rem;
 }
 .movie-rating {

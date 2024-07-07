@@ -1,7 +1,8 @@
 <template>
   <v-container v-if="director">
      <MovieGrid 
-        :movies="directorFilmography" 
+        :movies="directorFilmography"
+        :header-text="headerText"
       />
   </v-container>
 </template>
@@ -34,11 +35,18 @@ export default {
       router.push({ name: 'MoviePage', params: { id: movie.id } });
     };
 
+    const headerText = computed(() => {
+      return director.value?.name 
+        ? `<em>${director.value.name}'s</em> filmography:` 
+        : 'Director\'s filmography:';
+    });
+
     return {
       director,
       directorFilmography,
       selectMovie,
       formatDate,
+      headerText,
     };
   }
 }

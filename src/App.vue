@@ -72,13 +72,12 @@ export default {
 
 <style>
 /* General */
-.v-container--fluid {
-  padding: 0;
-}
 .v-container .v-card {
   padding-bottom: 10px;
 }
-
+.v-text-field .v-input__details {
+  display: none;
+}
 /* Loading */
 .loading-overlay {
   position: fixed;

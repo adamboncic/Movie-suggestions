@@ -22,7 +22,6 @@ export const useMovieStore = defineStore('movie', {
       this.error = null;
       this.hasSearched = true;
       try {
-        console.log(query)
         if (!query || query.trim() === '') {
           this.searchResults = [];
           this.hasSearched = false;
@@ -142,7 +141,7 @@ export const useMovieStore = defineStore('movie', {
     async fetchMovieDetails(movieId) {
       this.loading = true;
       this.error = null;
-      //this.selectedMovieDetails = null
+      this.selectedMovieDetails = null
       try {
         const response = await tmdbApi.getMovieDetails(movieId);
         this.selectedMovieDetails = response.data;
