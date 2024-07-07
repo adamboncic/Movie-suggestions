@@ -6,7 +6,7 @@ import vuetify from 'vite-plugin-vuetify'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/in-the-mood-for/',
+  base: '/movie-suggestions/',
   plugins: [
     vue(),
     vuetify({ autoImport: true }),

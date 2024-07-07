@@ -1,6 +1,6 @@
 {
-  "name": "in-the-mood-for",
-  "version": "0.0.0",
+  "name": "movie-suggestions",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
