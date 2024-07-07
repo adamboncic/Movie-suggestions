@@ -1,14 +1,20 @@
-# in-the-mood-for
+# In The Mood
 
-This template should help get you started developing with Vue 3 in Vite.
+A Vue 3 appl that helps users discover movies based on their preferences. Enter a movie you like, and the app will suggest similar films you might enjoy.
 
-## Recommended IDE Setup
+## Technologies Used
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- Vue 3
+- Vite
+- Vuetify 3
+- Pinia (for state management)
+- Vue Router
+- The Movie Database (TMDb) API
 
-## Customize configuration
+## Getting Started
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+1. Clone the repository
+2. Install dependencies:
 
 ## Project Setup
 
@@ -16,26 +22,23 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 npm install
 ```
 
-### Compile and Hot-Reload for Development
-
+## Start Server
 ```sh
 npm run dev
 ```
 
-### Compile and Minify for Production
+## Available Scripts
 
-```sh
-npm run build
-```
+- `npm run dev`: Start the development server
+- `npm run build`: Build for production
+- `npm run test:unit`: Run unit tests
+- `npm run lint`: Lint the code
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+## Contributing
 
-```sh
-npm run test:unit
-```
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-### Lint with [ESLint](https://eslint.org/)
+## License
 
-```sh
-npm run lint
+This project is open source and available under the [MIT License](LICENSE).
 ```
