@@ -6,6 +6,7 @@ import vuetify from 'vite-plugin-vuetify'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/in-the-mood-for/',
   plugins: [
     vue(),
     vuetify({ autoImport: true }),
@@ -14,5 +15,8 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  define: {
+    'process.env': {}
   }
 })
