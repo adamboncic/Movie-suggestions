@@ -88,7 +88,7 @@ export const useMovieStore = defineStore('movie', {
           moviesArr.push(...response.data.results);
         });
 
-        moviesArr.sort((a, b) => b.popularity - a.popularity);
+        // moviesArr.sort((a, b) => b.popularity - a.popularity);
 
         this.similarMovies = moviesArr;
 

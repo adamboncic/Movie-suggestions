@@ -2,7 +2,14 @@
 
 @font-face {
   font-family: 'Shapiro';
-  src: url('./fonts/Shapiro-97.otf') format('opentype');
+  src: url('./fonts/Shapiro-97.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+}
+@font-face {
+    font-family: 'shapiro95';
+    src: url('./fonts/shapiro-95-super-extd-webfont.woff2') format('woff2'),
+         url('./fonts/shapiro-95-super-extd-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
