@@ -43,6 +43,9 @@
         <template v-else-if="movie">
           <h1 class="movie-title">{{ movie.title }} {{ formatDate(movie.release_date) }}</h1>
           <div class="movie-meta">
+            <span class="movie-runtime" v-if="movie.runtime">
+              {{ formatRuntime(movie.runtime) }}
+            </span>
             <v-chip
               v-for="genre in movie.genres"
               :key="genre.id"
@@ -57,6 +60,7 @@
             <v-icon color="amber">mdi-star</v-icon>
             <span>{{ formatRating(movie.vote_average) }}</span>
           </div>
+          <h3 class="section-title">Overview</h3>
           <p class="movie-overview">{{ movie.overview }}</p>
           <div class="movie-crew" v-if="director">
             <h3>Director</h3>
@@ -68,43 +72,84 @@
               <li v-for="actor in cast.slice(0, 5)" :key="actor.id">{{ actor.name }}</li>
             </ul>
           </div>
-          <v-btn
-            v-if="movie.imdb_id"
-            :href="`https://www.imdb.com/title/${movie.imdb_id}`"
-            target="_blank"
-            color="warning"
-            class="mt-4"
-          >
-            View on IMDb
-          </v-btn>
+          <div class="button-group">
+            <v-btn
+              v-if="movie.imdb_id"
+              :href="`https://www.imdb.com/title/${movie.imdb_id}`"
+              target="_blank"
+              color="warning"
+              class="mt-4 mr-2"
+            >
+              View on IMDb
+            </v-btn>
+            <v-btn
+              @click="openTrailer(movie.id)"
+              color="primary"
+              class="mt-4"
+            >
+              <v-icon left>mdi-play</v-icon>
+              Play Trailer
+            </v-btn>
+          </div>
         </template>
         <p v-else-if="error" class="error-message">{{ error }}</p>
       </v-col>
     </v-row>
   </v-container>
+
+  <TrailerPopup 
+    :is-open="showTrailer"
+    :trailer-key="trailerKey"
+    @update:is-open="showTrailer = $event"
+  />
 </template>
 
 <script>
 import { useMovieStore } from '@/stores/movieStore';
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { formatDate, formatRating } from '@/utils/formatters';
+import TrailerPopup from '@/components/TrailerPopup.vue';
+import tmdbApi from '@/services/tmdbApi';
 import noPosterPath from '@/assets/no-poster.png';
 
 export default {
+  components: {
+    TrailerPopup,
+  },
   setup() {
     const movieStore = useMovieStore();
-    const { selectedMovieDetails: movie, loading, error } = storeToRefs(movieStore);
+    const { trailer, director, selectedMovieDetails: movie, loading, error } = storeToRefs(movieStore);
     const router = useRouter();
-
-    const director = computed(() => {
-      return movie.value?.credits?.crew.find(person => person.job === 'Director');
-    });
+    const showTrailer = ref(false);
+    const trailerKey = ref('');
 
     const cast = computed(() => {
       return movie.value?.credits?.cast || [];
     });
+
+    const formatRuntime = (minutes) => {
+      const hours = Math.floor(minutes / 60);
+      const mins = minutes % 60;
+      return `${hours}h ${mins}m`;
+    };
+
+    const updateTrailerPopupOpen = (value) => {
+      trailerPopupOpen.value = value;
+    };
+
+
+    const openTrailer = async (movieId) => {
+      try {
+        const response = await tmdbApi.getMovieVideos(movieId);
+        const trailer = response.data.results.find(video => video.type === 'Trailer');
+        trailerKey.value = trailer ? trailer.key : '';
+        showTrailer.value = true;
+      } catch (error) {
+        console.error('Error fetching trailer:', error);
+      }
+    };
 
     const posterSrc = computed(() => {
       if (loading.value || !movie.value?.poster_path) {
@@ -132,17 +177,32 @@ export default {
       formatRating,
       goBack,
       goHome,
+      formatRuntime,
+      showTrailer,
+      trailerKey,
+      openTrailer,
     };
   }
 }
 </script>
 
 <style scoped>
+p {
+  font-weight: 300;
+}
+.v-btn .v-icon {
+  margin-right: 8px;
+}
 .movie-details {
   max-width: 1200px;
   padding-bottom: 50px;
   margin-bottom: 20px;
   border-bottom: 1px solid;
+}
+.movie-runtime::after {
+  font-size: 1.1em;
+  content: "•";
+  padding: 0 4px 0 7px;
 }
 .back-button {
   margin-bottom: 0;
@@ -179,7 +239,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 .movie-overview {
   font-size: 1.1rem;

@@ -32,6 +32,9 @@ export default {
   getMovieImages(movieId) {
     return tmdbApi.get(`/movie/${movieId}/images`);
   },
+  getMovieVideos(movieId) {
+    return tmdbApi.get(`/movie/${movieId}/videos`);
+  },
   getMovieCredits(movieId) {
     return tmdbApi.get(`/movie/${movieId}/credits`);
   },

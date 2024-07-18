@@ -51,7 +51,7 @@ export default {
 
     const headerText = computed(() => {
       if (movieStore.selectedMovie) {
-        return `Similar movies to <em>"${movieStore.selectedMovie.title}"</em>:`;
+        return `Similar movies to <em>${movieStore.selectedMovie.title}</em>`;
       }
       return 'Similar movies:';
     });
@@ -104,6 +104,9 @@ export default {
   align-items: center;
   font-size: 60px;
   transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 .home-prompt {

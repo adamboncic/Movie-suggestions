@@ -71,6 +71,9 @@ export default {
 </script>
 
 <style>
+body {
+  font-family: "Space Grotesk", sans-serif;
+}
 /* General */
 .v-container .v-card {
   padding-bottom: 10px;

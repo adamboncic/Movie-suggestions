@@ -25,12 +25,6 @@ export default {
     const route = useRoute();
     const router = useRouter();
 
-    onMounted(async () => {
-      if (route.params.id) {
-        await movieStore.fetchDirectorFilmography(route.params.id);
-      }
-    });
-
     const selectMovie = (movie) => {
       router.push({ name: 'MoviePage', params: { id: movie.id } });
     };
