@@ -47,7 +47,8 @@
 
 <script>
 import { useRouter } from 'vue-router';
-import { ref, computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { ref, computed, onMounted } from 'vue';
 import { useMovieStore } from '@/stores/movieStore';
 import { formatDate, formatRating } from '@/utils/formatters';
 import noPosterPath from '@/assets/no-poster.png';
@@ -70,6 +71,7 @@ export default {
   setup(props) {
     const router = useRouter();
     const movieStore = useMovieStore();
+    const { genres } = storeToRefs(movieStore);
     const itemsPerPage = 8;
     const currentPage = ref(1);
 
@@ -88,6 +90,12 @@ export default {
     const loadMore = () => {
       currentPage.value++;
     };
+
+    onMounted(async () => {
+      if (genres.value.length === 0) {
+        await movieStore.fetchGenres();
+      }
+    });
 
     const getGenres = (genreIds) => {
       return genreIds.map(id => movieStore.genreMap[id]).slice(0,2);
