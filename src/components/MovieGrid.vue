@@ -1,9 +1,9 @@
 <template>
   <div class="movie-grid-container" v-if="visibleMovies.length > 0">
-    <h2 class="mb-2" v-html="headerText"></h2>
+    <h2 class="movie-grid-header" v-html="headerText"></h2>
     <v-container fluid>
       <v-row>
-        <v-col v-for="movie in visibleMovies" :key="movie.id" cols="12" sm="6" md="4" lg="3">
+        <v-col class="movie-grid-col" v-for="movie in visibleMovies" :key="movie.id" cols="12" sm="6" md="4" lg="3">
           <router-link :to="{ name: 'MoviePage', params: { id: movie.id } }" custom v-slot="{ navigate }">
             <v-card @click="navigate">
               <v-img
@@ -146,5 +146,16 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
+}
+@media (max-width: 600px) {
+  .movie-grid-header {
+    font-size: 1.25em;
+  }
+  .v-card .v-card-title {
+    font-size: 1rem;
+  }
+  .movie-grid-col {
+    padding: 12px 0;
+  }
 }
 </style>

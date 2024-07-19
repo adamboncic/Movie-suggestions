@@ -71,10 +71,13 @@ export default {
 </script>
 
 <style>
+/* General */
 body {
   font-family: "Space Grotesk", sans-serif;
 }
-/* General */
+.v-container {
+  max-width: 1400px !important;
+}
 .v-container .v-card {
   padding-bottom: 10px;
 }

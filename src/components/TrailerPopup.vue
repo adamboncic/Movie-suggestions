@@ -1,11 +1,11 @@
 <template>
-  <v-dialog :model-value="isOpen" @update:model-value="$emit('update:isOpen', $event)" max-width="800px">
+  <v-dialog id="trailer-popup" :model-value="isOpen" @update:model-value="$emit('update:isOpen', $event)">
     <v-card>
       <v-card-title class="headline d-flex justify-space-between align-center">
         <span class="trailer-title">Trailer</span>
         <v-icon @click="$emit('update:isOpen', false)">mdi-close</v-icon>
       </v-card-title>
-      <v-card-text class="d-flex justify-center align-center" style="min-height: 450px;">
+      <v-card-text class="trailer-content">
         <v-progress-circular
           v-if="!trailerLoaded && trailerKey"
           indeterminate
@@ -15,7 +15,7 @@
         <iframe
           v-if="trailerKey"
           width="100%"
-          height="450"
+          height="600"
           :src="`https://www.youtube.com/embed/${trailerKey}`"
           frameborder="0"
           allow="autoplay; encrypted-media"
@@ -53,7 +53,17 @@ export default {
 </script>
 
 <style scoped>
-.v-card {
-  padding: .5em 0.25em;
+#trailer-popup {
+  max-width: 1200px;
+}
+#trailer-popup .v-card {
+  background: black;
+}
+#trailer-popup .trailer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 600px;
+  padding: 0;
 }
 </style>

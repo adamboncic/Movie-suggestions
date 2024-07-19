@@ -8,7 +8,7 @@
               <span>In The</span><span>Mood</span>
             </h1>
             <p class="home-prompt">
-              (Discover films that resonate with your favorite movies)
+              (Discover films that resonate with your favorites)
             </p>
           </div>
           <SearchBar @search="onSearch" />
@@ -93,6 +93,7 @@ export default {
 
 .has-search-results .header-search-wrapper {
   transform: translateY(-20px) scale(0.95);
+  padding-top: .5em;
 }
 
 .home-header h1 {
@@ -112,6 +113,7 @@ export default {
 .home-prompt {
   margin-bottom: 40px;
   font-size: 15px;
+  padding-top: 5px;
   transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
 }
 

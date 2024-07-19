@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="movie-page">
     <MovieDetails />
     <DirectorFilmography />
   </v-container>
@@ -30,13 +30,21 @@ export default {
 
     onMounted(() => {
       fetchMovieData(route.params.id);
+      window.scrollTo(0, 0);
     });
 
     watch(() => route.params.id, (newId) => {
       fetchMovieData(newId);
+      window.scrollTo(0, 0);
     });
 
     return { movieStore };
   }
 }
 </script>
+
+<style scoped>
+  .movie-page.v-container {
+    padding: 0;
+  }
+</style>

@@ -103,6 +103,7 @@ export const useMovieStore = defineStore('movie', {
       try {
         const response = await tmdbApi.getGenres();
         this.genres = response.data.genres;
+        console.log(this.genres)
       } catch (error) {
         console.error('Error fetching genres:', error);
         this.error = 'Failed to fetch genres';

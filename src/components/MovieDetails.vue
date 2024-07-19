@@ -1,6 +1,6 @@
 <template>
   <v-container class="movie-details">
-    <div class="d-flex justify-space-between align-center mb-6">
+    <div class="movie-details-nav">
       <v-btn 
         @click="goBack" 
         class="back-button" 
@@ -41,36 +41,43 @@
           type="article"
         ></v-skeleton-loader>
         <template v-else-if="movie">
-          <h1 class="movie-title">{{ movie.title }} {{ formatDate(movie.release_date) }}</h1>
-          <div class="movie-meta">
-            <span class="movie-runtime" v-if="movie.runtime">
-              {{ formatRuntime(movie.runtime) }}
-            </span>
-            <v-chip
-              v-for="genre in movie.genres"
-              :key="genre.id"
-              class="ma-1"
-              color="primary"
-              text-color="white"
-            >
-              {{ genre.name }}
-            </v-chip>
-          </div>
-          <div class="movie-rating">
-            <v-icon color="amber">mdi-star</v-icon>
-            <span>{{ formatRating(movie.vote_average) }}</span>
-          </div>
-          <h3 class="section-title">Overview</h3>
-          <p class="movie-overview">{{ movie.overview }}</p>
-          <div class="movie-crew" v-if="director">
-            <h3>Director</h3>
-            <p>{{ director.name }}</p>
-          </div>
-          <div class="movie-cast" v-if="cast.length">
-            <h3>Top Cast</h3>
-            <ul>
-              <li v-for="actor in cast.slice(0, 5)" :key="actor.id">{{ actor.name }}</li>
-            </ul>
+          <div class="movie-details-wrapper">
+            <h1 class="movie-title">{{ movie.title }} {{ formatDate(movie.release_date) }}</h1>
+            <div class="movie-info">
+              <div class="movie-meta">
+                <div class="movie-rating">
+                  <v-icon size="small" color="amber">mdi-star</v-icon>
+                  <span>{{ formatRating(movie.vote_average) }}</span>
+                </div>
+                <div class="movie-runtime" v-if="movie.runtime">
+                  {{ formatRuntime(movie.runtime) }}
+                </div>
+              </div>
+              <div class="movie-genres">
+                <v-chip
+                  v-for="genre in movie.genres"
+                  :key="genre.id"
+                  class="ma-1"
+                  color="primary"
+                  text-color="white"
+                >
+                  {{ genre.name }}
+                </v-chip>
+              </div>
+              
+            </div>
+            <h3 class="section-title">Overview</h3>
+            <p class="movie-overview">{{ movie.overview }}</p>
+            <div class="movie-crew" v-if="director">
+              <h3>Director</h3>
+              <p>{{ director.name }}</p>
+            </div>
+            <div class="movie-cast" v-if="cast.length">
+              <h3>Top Cast</h3>
+              <ul>
+                <li v-for="actor in cast.slice(0, 5)" :key="actor.id">{{ actor.name }}</li>
+              </ul>
+            </div>
           </div>
           <div class="button-group">
             <v-btn
@@ -194,15 +201,15 @@ p {
   margin-right: 8px;
 }
 .movie-details {
-  max-width: 1200px;
   padding-bottom: 50px;
   margin-bottom: 20px;
   border-bottom: 1px solid;
 }
-.movie-runtime::after {
-  font-size: 1.1em;
-  content: "•";
-  padding: 0 4px 0 7px;
+.movie-details-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3em;
 }
 .back-button {
   margin-bottom: 0;
@@ -229,25 +236,36 @@ p {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
 }
+.movie-info {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  gap: 10px;
+}
 .movie-meta {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-bottom: 1rem;
+}
+.movie-meta div + div::before {
+  font-size: 1.1em;
+  content: "•";
+  padding: 8px;
 }
 .movie-rating {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 1.5rem;
 }
 .movie-overview {
-  font-size: 1.1rem;
+  font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 1.5rem;
 }
 .movie-crew, .movie-cast {
   margin-bottom: 1rem;
+}
+.button-group {
+  margin-top: 1em;
 }
 .error-message {
   color: red;
@@ -256,7 +274,19 @@ p {
 @media (max-width: 960px) {
   .poster-col {
     max-width: 300px;
-    margin: 0 auto;
+    margin: 1em auto;
+    padding: 0;
+  }
+}
+@media (max-width: 600px) {
+  .movie-details {
+    font-size: 14px;
+  }
+  .movie-title{
+    font-size: 2em;
+  }
+  .v-chip.v-chip--size-default {
+    font-size: 12px;
   }
 }
 </style>
