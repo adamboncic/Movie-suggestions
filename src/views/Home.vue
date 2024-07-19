@@ -85,14 +85,14 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  will-change: transform, opacity;
+  transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
 }
 
 .header-search-wrapper {
   transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
   transform-origin: top center;
   text-align: center;
-  will-change: transform, opacity;
+  will-change: transform;
 }
 
 .has-search-results .header-search-wrapper {
@@ -107,8 +107,8 @@ export default {
 }
 
 .home-header > * {
-  transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
-  will-change: transform, font-size;
+  transition: font-size 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  will-change: font-size;
 }
 
 .home-header h1 {
@@ -129,8 +129,7 @@ export default {
 .home-prompt {
   margin-bottom: 40px;
   font-size: 15px;
-  opacity: 1;
-  transition: opacity 0.3s ease, font-size 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  transition: font-size 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000), margin-bottom 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
 }
 
 .has-search-results .home-header h1 {
@@ -170,17 +169,5 @@ export default {
   .home-prompt {
     font-size: 18px;
   }
-}
-
-/* Add these new transition classes */
-.fade-up-enter-active,
-.fade-up-leave-active {
-  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
-}
-
-.fade-up-enter-from,
-.fade-up-leave-to {
-  opacity: 0;
-  transform: translateY(20px);
 }
 </style>

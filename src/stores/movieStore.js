@@ -91,7 +91,6 @@ export const useMovieStore = defineStore('movie', {
           moviesArr.push(...response.data.results);
         });
 
-
         this.similarMovies = moviesArr;
 
       } catch (error) {

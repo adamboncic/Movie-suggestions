@@ -45,6 +45,9 @@ export default {
   getMovieCredits(movieId) {
     return tmdbApi.get(`/movie/${movieId}/credits`);
   },
+  getMovieKeywords(movieId) {
+    return tmdbApi.get(`/movie/${movieId}/keywords`);
+  },
   getPersonDetails(personId) {
     return tmdbApi.get(`/person/${personId}`);
   },
