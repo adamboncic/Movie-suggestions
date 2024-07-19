@@ -110,7 +110,7 @@ export default {
       if (genres.value.length === 0) {
         await movieStore.fetchGenres();
       }
-      window.scrollTo(0, 0);
+      scrollToTop()
       window.addEventListener('scroll', handleScroll);
     });
 
