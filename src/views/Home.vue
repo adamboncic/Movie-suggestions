@@ -2,33 +2,35 @@
   <v-container :class="['home-container', { 'has-search-results': movieStore.similarMovies.length }]">
     <v-row justify="center" align="center" class="fill-height">
       <v-col cols="12" md="8" lg="6">
-        <div class="header-search-wrapper" :class="{ 'minimized': movieStore.similarMovies.length }">
-          <div class="home-header" @click="clearSearch">
-            <h1>
-              <span>In The</span><span>Mood</span>
-            </h1>
-            <p class="home-prompt">
-              (Discover films that resonate with your favorites)
-            </p>
+        <transition name="fade-in" appear>
+          <div class="header-search-wrapper" :class="{ 'minimized': movieStore.similarMovies.length }">
+            <div class="home-header" @click="clearSearch">
+              <h1>
+                <span>In The</span><span>Mood</span>
+              </h1>
+              <p class="home-prompt">
+                (Discover films that resonate with your favorites)
+              </p>
+            </div>
+            <SearchBar @search="onSearch"/>
+            <ErrorAlert 
+              :error="movieStore.error"
+              @clear="movieStore.error = null"
+            />
           </div>
-          <SearchBar @search="onSearch"/>
-          <ErrorAlert 
-            :error="movieStore.error"
-            @clear="movieStore.error = null"
-          />
-        </div>
+        </transition>
       </v-col>
     </v-row>
-    <transition name="fade-up">
-      <MovieGrid 
-        v-if="similarMovies.length"
-        :movies="similarMovies" 
-        :header-text="headerText"
-      />
-    </transition>
+
+      <div v-if="similarMovies.length" class="movie-grid-wrapper" key="movie-grid">
+        <MovieGrid 
+          :movies="similarMovies" 
+          :header-text="headerText"
+        />
+      </div>
+
   </v-container>
 </template>
-
 
 <script>
 import { useMovieStore } from '@/stores/movieStore';
@@ -136,6 +138,24 @@ export default {
   margin-bottom: 20px;
 }
 
+/* Fade-in animation for header elements */
+.fade-in-enter-active,
+.fade-in-leave-active {
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+}
+
+.fade-in-enter-from,
+.fade-in-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.fade-in-enter-to,
+.fade-in-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* Mobile devices */
 @media screen and (max-width: 600px) {
   .home-header h1 {
@@ -167,22 +187,5 @@ export default {
   .home-prompt {
     font-size: 18px;
   }
-}
-
-.fade-up-enter-active,
-.fade-up-leave-active {
-  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.215, 0.610, 0.355, 1.000);
-}
-
-.fade-up-enter-from,
-.fade-up-leave-to {
-  opacity: 0;
-  transform: translateY(40px);
-}
-
-.fade-up-enter-to,
-.fade-up-leave-from {
-  opacity: 1;
-  transform: translateY(0);
 }
 </style>

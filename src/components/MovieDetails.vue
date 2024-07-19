@@ -26,6 +26,7 @@
             :alt="movie?.title || 'Movie poster'"
             class="movie-poster"
             cover
+            :lazy-src="noPosterPath"
           >
             <template v-slot:placeholder>
               <v-row class="fill-height ma-0" align="center" justify="center">
@@ -132,20 +133,19 @@ export default {
     const showTrailer = ref(false);
     const trailerKey = ref('');
 
-    const cast = computed(() => {
-      return movie.value?.credits?.cast || [];
-    });
+    const cast = computed(() => movie.value?.credits?.cast || []);
+
+    const posterSrc = computed(() => 
+      movie.value?.poster_path 
+        ? `https://image.tmdb.org/t/p/w500${movie.value.poster_path}`
+        : noPosterPath
+    );
 
     const formatRuntime = (minutes) => {
       const hours = Math.floor(minutes / 60);
       const mins = minutes % 60;
       return `${hours}h ${mins}m`;
     };
-
-    const updateTrailerPopupOpen = (value) => {
-      trailerPopupOpen.value = value;
-    };
-
 
     const openTrailer = async (movieId) => {
       try {
@@ -158,20 +158,8 @@ export default {
       }
     };
 
-    const posterSrc = computed(() => {
-      if (loading.value || !movie.value?.poster_path) {
-        return noPosterPath;
-      }
-      return `https://image.tmdb.org/t/p/w500${movie.value.poster_path}`;
-    });
-
-    const goBack = () => {
-      router.go(-1);
-    };
-
-    const goHome = () => {
-      router.push('/');
-    };
+    const goBack = () => router.go(-1);
+    const goHome = () => router.push('/');
 
     return {
       movie,
@@ -180,6 +168,7 @@ export default {
       director,
       cast,
       posterSrc,
+      noPosterPath,
       formatDate,
       formatRating,
       goBack,
