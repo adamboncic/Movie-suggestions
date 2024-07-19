@@ -68,7 +68,7 @@
               
             </div>
             <h3 class="section-title">Overview</h3>
-            <p class="movie-overview">{{ movie.overview }}</p>
+            <p class="movie-overview">{{ movie.overview || 'N/A' }}</p>
             <div class="movie-crew" v-if="director">
               <h3>Director</h3>
               <p>{{ director.name }}</p>
