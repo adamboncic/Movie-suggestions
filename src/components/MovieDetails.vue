@@ -265,7 +265,7 @@ p {
   margin-bottom: 1rem;
 }
 .button-group {
-  margin-top: 1em;
+  margin-top: 2em;
 }
 .error-message {
   color: red;

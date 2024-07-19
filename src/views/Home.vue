@@ -101,7 +101,8 @@ export default {
   flex-direction: column;
   line-height: 1;
   cursor: pointer;
-  font-family: 'Shapiro', sans-serif;
+  font-family: 'Shapiro', 'shapiro95', sans-serif;
+  font-weight: 100;
   align-items: center;
   font-size: 60px;
   transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
