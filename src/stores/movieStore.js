@@ -7,9 +7,12 @@ export const useMovieStore = defineStore('movie', {
     selectedMovie: null,
     selectedMovieDetails: null,
     similarMovies: [],
+    searchResults: [],
+    movieReviews: [],
+    reviewsPage: 1,
+    totalReviewPages: 0,
     directorFilmography: [],
     director: null,
-    searchResults: [],
     genres: [],
     loading: false,
     error: null,
@@ -103,7 +106,6 @@ export const useMovieStore = defineStore('movie', {
       try {
         const response = await tmdbApi.getGenres();
         this.genres = response.data.genres;
-        console.log(this.genres)
       } catch (error) {
         console.error('Error fetching genres:', error);
         this.error = 'Failed to fetch genres';
@@ -148,6 +150,24 @@ export const useMovieStore = defineStore('movie', {
       } catch (error) {
         this.error = 'Error fetching movie details. Please try again.';
         console.error('Error fetching movie details:', error);
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async fetchMovieReviews(movieId, page = 1) {
+      this.loading = true;
+      try {
+        const response = await tmdbApi.getMovieReviews(movieId, page);
+        this.movieReviews = response.data.results.map(review => ({
+          ...review,
+          showFull: false
+        }));
+        this.reviewsPage = response.data.page;
+        this.totalReviewPages = response.data.total_pages;
+      } catch (error) {
+        console.error('Error fetching movie reviews:', error);
+        this.error = 'Failed to fetch movie reviews';
       } finally {
         this.loading = false;
       }

@@ -55,8 +55,7 @@ import { formatDate, formatRating } from '@/utils/formatters';
 export default {
   setup() {
     const movieStore = useMovieStore();
-    const { searchResults, loading, genres } = storeToRefs(movieStore);
-    const selectedMovie = ref(null);
+    const { selectedMovie, searchResults, loading, genres } = storeToRefs(movieStore);
 
     const searchQuery = computed({
       get: () => movieStore.searchQuery,

@@ -21,8 +21,8 @@
     </v-row>
     <transition name="fade-up">
       <MovieGrid 
-        v-if="movieStore.similarMovies.length"
-        :movies="movieStore.similarMovies" 
+        v-if="similarMovies.length"
+        :movies="similarMovies" 
         :header-text="headerText"
       />
     </transition>
@@ -31,6 +31,7 @@
 
 <script>
 import { useMovieStore } from '@/stores/movieStore';
+import { storeToRefs } from 'pinia';
 import SearchBar from '@/components/SearchBar.vue';
 import MovieGrid from '@/components/MovieGrid.vue';
 import ErrorAlert from '@/components/ErrorAlert.vue';
@@ -44,6 +45,7 @@ export default {
   },
   setup() {
     const movieStore = useMovieStore();
+    const { similarMovies } = storeToRefs(movieStore);
 
     const clearSearch = () => {
       movieStore.clearSearch();
@@ -68,6 +70,7 @@ export default {
 
     return { 
       movieStore,
+      similarMovies,
       onSearch,
       clearSearch,
       headerText

@@ -15,7 +15,7 @@
         <iframe
           v-if="trailerKey"
           width="100%"
-          height="450"
+          class="trailer-iframe"
           :src="`https://www.youtube.com/embed/${trailerKey}`"
           frameborder="0"
           allow="autoplay; encrypted-media"
@@ -54,10 +54,13 @@ export default {
 
 <style scoped>
 #trailer-popup {
-  max-width: 1000px;
+  max-width: 1200px;
 }
 #trailer-popup .v-card {
   background: black;
+}
+#trailer-popup .trailer-iframe {
+  height: 600px;
 }
 #trailer-popup .trailer-content {
   display: flex;
@@ -65,5 +68,13 @@ export default {
   align-items: center;
   min-height: 450px;
   padding: 0;
+}
+@media (max-width: 600px) {
+  #trailer-popup {
+    max-width: 1000px;
+  }
+  #trailer-popup .trailer-iframe {
+    height: 450px;
+  }
 }
 </style>

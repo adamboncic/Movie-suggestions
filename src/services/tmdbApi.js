@@ -29,6 +29,13 @@ export default {
       }
     });
   },
+  getMovieReviews(movieId, page = 1) {
+    return tmdbApi.get(`/movie/${movieId}/reviews`, {
+      params: {
+        page: page
+      }
+    });
+  },
   getMovieImages(movieId) {
     return tmdbApi.get(`/movie/${movieId}/images`);
   },

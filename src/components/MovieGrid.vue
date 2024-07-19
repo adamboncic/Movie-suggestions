@@ -42,13 +42,23 @@
         </v-col>
       </v-row>
     </v-container>
-  </div>
+
+    <!-- Scroll to Top Button -->
+    <v-btn
+      v-show="showScrollTopButton"
+      @click="scrollToTop"
+      class="scroll-to-top-btn"
+      icon
+    >
+      <v-icon>mdi-chevron-up</v-icon>
+    </v-btn>
+  </div>  
 </template>
 
 <script>
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useMovieStore } from '@/stores/movieStore';
 import { formatDate, formatRating } from '@/utils/formatters';
 import noPosterPath from '@/assets/no-poster.png';
@@ -72,8 +82,9 @@ export default {
     const router = useRouter();
     const movieStore = useMovieStore();
     const { genres } = storeToRefs(movieStore);
-    const itemsPerPage = 8;
+    const itemsPerPage = 24;
     const currentPage = ref(1);
+    const showScrollTopButton = ref(false);
 
     const selectMovie = (movie) => {
       router.push({ name: 'MoviePage', params: { id: movie.id } });
@@ -95,7 +106,20 @@ export default {
       if (genres.value.length === 0) {
         await movieStore.fetchGenres();
       }
+      window.addEventListener('scroll', handleScroll);
     });
+
+    onUnmounted(() => {
+      window.removeEventListener('scroll', handleScroll);
+    });
+
+    const handleScroll = () => {
+      showScrollTopButton.value = window.scrollY > 500;
+    };
+
+    const scrollToTop = () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     const getGenres = (genreIds) => {
       return genreIds.map(id => movieStore.genreMap[id]).slice(0,2);
@@ -109,7 +133,9 @@ export default {
       formatRating, 
       getGenres,
       selectMovie,
-      noPosterPath
+      noPosterPath,
+      showScrollTopButton,
+      scrollToTop
     };
   }
 };
@@ -155,6 +181,33 @@ export default {
   text-overflow: ellipsis;
   max-width: 100%;
 }
+
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 10px;
+  z-index: 99;
+  font-size: 20px;
+  width: 45px !important;
+  height: 45px !important;
+  border-radius: 50% !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s ease !important;
+  display: none;
+}
+
+.scroll-to-top-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.scroll-to-top-btn .v-icon {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
 @media (max-width: 600px) {
   .movie-grid-header {
     font-size: 1.25em;
@@ -164,6 +217,11 @@ export default {
   }
   .movie-grid-col {
     padding: 12px 0;
+  }
+}
+@media (max-width: 960px) {
+  .scroll-to-top-btn {
+    display: block;
   }
 }
 </style>
