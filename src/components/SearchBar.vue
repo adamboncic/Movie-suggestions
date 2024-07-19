@@ -6,6 +6,8 @@
       :loading="loading"
       :search-input.sync="searchQuery"
       color="white"
+      dense
+      :menu-props="{ maxWidth: '200' }"
       hide-no-data
       hide-selected
       item-title="title"
