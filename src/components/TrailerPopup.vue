@@ -15,7 +15,7 @@
         <iframe
           v-if="trailerKey"
           width="100%"
-          height="600"
+          height="450"
           :src="`https://www.youtube.com/embed/${trailerKey}`"
           frameborder="0"
           allow="autoplay; encrypted-media"
@@ -54,7 +54,7 @@ export default {
 
 <style scoped>
 #trailer-popup {
-  max-width: 1200px;
+  max-width: 1000px;
 }
 #trailer-popup .v-card {
   background: black;
@@ -63,7 +63,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 600px;
+  min-height: 450px;
   padding: 0;
 }
 </style>

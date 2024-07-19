@@ -286,7 +286,7 @@ p {
     font-size: 2em;
   }
   .v-chip.v-chip--size-default {
-    font-size: 12px;
+    font-size: 14px;
   }
 }
 </style>
