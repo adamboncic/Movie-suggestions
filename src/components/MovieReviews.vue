@@ -42,13 +42,20 @@ import { onMounted, ref } from 'vue';
 import { formatDate } from '@/utils/formatters';
 
 export default {
-  setup() {
+  props: {
+	movieId: {
+		type: Number,
+		required: true
+	}
+  },
+  setup(props) {
     const movieStore = useMovieStore();
     const { movieReviews, reviewsPage, totalReviewPages } = storeToRefs(movieStore);
-    const movieId = ref(null); // You'll need to set this based on your route params
 
     onMounted(async () => {
-      await movieStore.fetchMovieReviews(movieId.value);
+      if (props.movieId) {
+        await movieStore.fetchMovieReviews(props.movieId);
+      }
     });
 
     const loadReviewPage = async (page) => {

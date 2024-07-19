@@ -85,18 +85,30 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform, opacity;
 }
 
 .header-search-wrapper {
-  transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
   transform-origin: top center;
   text-align: center;
+  will-change: transform, opacity;
 }
 
 .has-search-results .header-search-wrapper {
-  transform: translateY(-20px) scale(0.95);
   padding-top: .5em;
+  padding-bottom: 2em;
+}
+
+.home-header {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.home-header > * {
+  transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  will-change: transform, font-size;
 }
 
 .home-header h1 {
@@ -108,7 +120,7 @@ export default {
   font-weight: 100;
   align-items: center;
   font-size: 60px;
-  transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  white-space: nowrap;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -117,8 +129,8 @@ export default {
 .home-prompt {
   margin-bottom: 40px;
   font-size: 15px;
-  padding-top: 5px;
-  transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  opacity: 1;
+  transition: opacity 0.3s ease, font-size 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
 }
 
 .has-search-results .home-header h1 {
@@ -135,7 +147,6 @@ export default {
   .home-header h1 {
     font-size: 50px;
   }
-
   .home-prompt {
     font-size: 13px;
   }
@@ -146,7 +157,6 @@ export default {
   .home-header h1 {
     font-size: 70px;
   }
-
   .home-prompt {
     font-size: 16px;
   }
@@ -157,9 +167,20 @@ export default {
   .home-header h1 {
     font-size: 80px;
   }
-
   .home-prompt {
     font-size: 18px;
   }
+}
+
+/* Add these new transition classes */
+.fade-up-enter-active,
+.fade-up-leave-active {
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+}
+
+.fade-up-enter-from,
+.fade-up-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
 }
 </style>
