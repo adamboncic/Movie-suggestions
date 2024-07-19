@@ -11,7 +11,7 @@
               (Discover films that resonate with your favorites)
             </p>
           </div>
-          <SearchBar @search="onSearch" />
+          <SearchBar />
           <ErrorAlert 
             :error="movieStore.error"
             @clear="movieStore.error = null"
@@ -59,20 +59,20 @@ export default {
       return 'Similar movies:';
     });
 
-    const onSearch = () => {
-      // Scroll to results if needed
-      setTimeout(() => {
-        const movieGrid = document.querySelector('.movie-grid');
-        if (movieGrid) {
-          movieGrid.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
-    };
+    // const onSearch = () => {
+    //   // Scroll to results if needed
+    //   setTimeout(() => {
+    //     const movieGrid = document.querySelector('.movie-grid');
+    //     if (movieGrid) {
+    //       movieGrid.scrollIntoView({ behavior: 'smooth' });
+    //     }
+    //   }, 100);
+    // };
 
     return { 
       movieStore,
       similarMovies,
-      onSearch,
+      // onSearch,
       clearSearch,
       headerText
     };
@@ -95,7 +95,6 @@ export default {
   transform-origin: top center;
   text-align: center;
   will-change: transform, opacity;
-  margin-bottom: 2rem;
 }
 
 .header-search-wrapper.minimized {
@@ -109,11 +108,6 @@ export default {
   transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
 }
 
-.home-header > * {
-  will-change: transform, font-size;
-  transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
-}
-
 .home-header h1 {
   display: flex;
   flex-direction: column;
@@ -123,14 +117,10 @@ export default {
   font-weight: 100;
   align-items: center;
   font-size: 60px;
-  white-space: nowrap;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
 }
 
 .home-prompt {
+  margin-top: 5px;
   margin-bottom: 40px;
   font-size: 15px;
   opacity: 1;

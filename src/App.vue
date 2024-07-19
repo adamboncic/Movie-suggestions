@@ -12,7 +12,7 @@
     </transition>
     <!-- Main content -->
     <v-main>
-      <v-container fluid>
+      <v-container class="main-container" fluid>
         <router-view v-slot="{ Component }">
           <transition name="fade" mode="out-in">
             <component :is="Component" />
@@ -140,5 +140,10 @@ body {
 .fade-up-enter-from,
 .fade-up-leave-to {
   transform: translateY(30px);
+}
+@media (max-width: 600px) {
+  .main-container {
+    padding: 0;
+  }
 }
 </style>
