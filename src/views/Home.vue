@@ -2,7 +2,7 @@
   <v-container :class="['home-container', { 'has-search-results': movieStore.similarMovies.length }]">
     <v-row justify="center" align="center" class="fill-height">
       <v-col cols="12" md="8" lg="6">
-        <div class="header-search-wrapper">
+        <div class="header-search-wrapper" :class="{ 'minimized': movieStore.similarMovies.length }">
           <div class="home-header" @click="clearSearch">
             <h1>
               <span>In The</span><span>Mood</span>
@@ -28,6 +28,7 @@
     </transition>
   </v-container>
 </template>
+
 
 <script>
 import { useMovieStore } from '@/stores/movieStore';
@@ -84,7 +85,8 @@ export default {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 2rem;
   transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
 }
 
@@ -92,23 +94,24 @@ export default {
   transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
   transform-origin: top center;
   text-align: center;
-  will-change: transform;
+  will-change: transform, opacity;
+  margin-bottom: 2rem;
 }
 
-.has-search-results .header-search-wrapper {
-  padding-top: .5em;
-  padding-bottom: 2em;
+.header-search-wrapper.minimized {
+  transform: translateY(-2rem) scale(0.95);
 }
 
 .home-header {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
 }
 
 .home-header > * {
-  transition: font-size 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
-  will-change: font-size;
+  will-change: transform, font-size;
+  transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
 }
 
 .home-header h1 {
@@ -124,12 +127,14 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
 }
 
 .home-prompt {
   margin-bottom: 40px;
   font-size: 15px;
-  transition: font-size 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000), margin-bottom 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  opacity: 1;
+  transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
 }
 
 .has-search-results .home-header h1 {
@@ -144,10 +149,13 @@ export default {
 /* Mobile devices */
 @media screen and (max-width: 600px) {
   .home-header h1 {
-    font-size: 50px;
+    font-size: 60px;
   }
   .home-prompt {
     font-size: 13px;
+  }
+  .has-search-results .home-header h1 {
+    font-size: 30px;
   }
 }
 
@@ -169,5 +177,22 @@ export default {
   .home-prompt {
     font-size: 18px;
   }
+}
+
+.fade-up-enter-active,
+.fade-up-leave-active {
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+}
+
+.fade-up-enter-from,
+.fade-up-leave-to {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.fade-up-enter-to,
+.fade-up-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>

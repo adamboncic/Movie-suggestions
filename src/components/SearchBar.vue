@@ -119,6 +119,7 @@ export default {
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
+  transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
 }
 
 .search-result-item {
