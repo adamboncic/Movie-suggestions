@@ -11,7 +11,7 @@
               (Discover films that resonate with your favorites)
             </p>
           </div>
-          <SearchBar />
+          <SearchBar @search="onSearch"/>
           <ErrorAlert 
             :error="movieStore.error"
             @clear="movieStore.error = null"
@@ -59,20 +59,20 @@ export default {
       return 'Similar movies:';
     });
 
-    // const onSearch = () => {
-    //   // Scroll to results if needed
-    //   setTimeout(() => {
-    //     const movieGrid = document.querySelector('.movie-grid');
-    //     if (movieGrid) {
-    //       movieGrid.scrollIntoView({ behavior: 'smooth' });
-    //     }
-    //   }, 100);
-    // };
+    const onSearch = () => {
+      // Scroll to results if needed
+      setTimeout(() => {
+        const movieGrid = document.querySelector('.movie-grid');
+        if (movieGrid) {
+          movieGrid.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    };
 
     return { 
       movieStore,
       similarMovies,
-      // onSearch,
+      onSearch,
       clearSearch,
       headerText
     };
