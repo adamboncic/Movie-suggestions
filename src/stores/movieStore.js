@@ -78,7 +78,7 @@ export const useMovieStore = defineStore('movie', {
 
         moviesArr = results;
 
-        const maxPages = Math.min(total_pages, 5);  // Limit to 5 pages
+        const maxPages = Math.min(total_pages, 10);  // Limit to 10 pages
         const remainingPages = Array.from({ length: maxPages - 1 }, (_, i) => i + 2);
 
         const remainingPagesPromises = remainingPages.map(page => 

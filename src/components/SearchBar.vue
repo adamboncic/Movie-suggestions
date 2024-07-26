@@ -35,7 +35,7 @@
               {{ formatRating(item.raw.vote_average) }}
             </span>
             <div class="genre-pills">
-              <span v-for="genre in getGenres(item.raw.genre_ids).slice(0,2)" :key="genre" class="genre-pill">
+              <span v-for="genre in getGenres(item.raw.genre_ids)" :key="genre" class="genre-pill">
                 {{ genre }}
               </span>
             </div>
@@ -95,7 +95,9 @@ export default {
     });
 
     const getGenres = (genreIds) => {
-      return genreIds.map(id => movieStore.genreMap[id] || 'Unknown');
+      if (genreIds) {
+        return genreIds.map(id => movieStore.genreMap[id]).slice(0,2);
+      }
     };
 
     return {

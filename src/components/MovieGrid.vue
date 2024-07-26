@@ -95,7 +95,8 @@ export default {
     };
 
     const visibleMovies = computed(() => {
-      return props.movies.slice(0, currentPage.value * itemsPerPage);
+      return props.movies
+      //return props.movies.slice(0, currentPage.value * itemsPerPage);
     });
 
     const hasMoreMovies = computed(() => {
@@ -110,7 +111,6 @@ export default {
       if (genres.value.length === 0) {
         await movieStore.fetchGenres();
       }
-      scrollToTop()
       window.addEventListener('scroll', handleScroll);
     });
 
@@ -127,7 +127,9 @@ export default {
     };
 
     const getGenres = (genreIds) => {
-      return genreIds.map(id => movieStore.genreMap[id]).slice(0,2);
+      if (genreIds) {
+        return genreIds.map(id => movieStore.genreMap[id]).slice(0,2);
+      }
     };
 
     return { 

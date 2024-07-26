@@ -1,21 +1,13 @@
 <template>
   <v-app>
     <!-- Loading animation -->
-    <transition name="fade">
-      <div v-if="isLoading" class="loading-overlay">
-        <v-progress-linear
-          indeterminate
-          color="primary"
-          height="3"
-        ></v-progress-linear>
-      </div>
-    </transition>
+    <LoadingOverlay ref="loadingOverlay" />
     <!-- Main content -->
     <v-main>
       <v-container class="main-container" fluid>
         <router-view v-slot="{ Component }">
           <transition name="fade" mode="out-in">
-            <component :is="Component" />
+            <component :is="Component" :key="$route.fullPath" />
           </transition>
         </router-view>
       </v-container>
@@ -24,46 +16,47 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useMovieStore } from '@/stores/movieStore';
+import LoadingOverlay from './components/LoadingOverlay.vue';
 
 export default {
+  components: {
+    LoadingOverlay,
+  },
   setup() {
+    const loadingOverlay = ref(null);
     const router = useRouter();
-    const isLoading = ref(false);
     const movieStore = useMovieStore();
-    let loadTimer = null;
 
     const startLoading = () => {
-      clearTimeout(loadTimer);
-      loadTimer = setTimeout(() => {
-        isLoading.value = true;
-      }, 200);
+      loadingOverlay.value.isLoading = true;
     };
 
     const stopLoading = () => {
-      clearTimeout(loadTimer);
-      isLoading.value = false;
+      setTimeout(() => {
+        loadingOverlay.value.isLoading = false;
+      }, 300);
     };
 
     onMounted(() => {
       router.beforeEach((to, from, next) => {
-        startLoading();
+        if (to.name === 'Home') {
+          startLoading();
+        }
         next();
       });
 
-      router.afterEach(() => {
-        stopLoading();
+      router.afterEach((to) => {
+        if (to.name === 'Home') {
+          stopLoading();
+        }
       });
     });
 
-    onUnmounted(() => {
-      clearTimeout(loadTimer);
-    });
-
     return {
-      isLoading,
+      loadingOverlay,
       movieStore
     };
   },
@@ -83,14 +76,6 @@ body {
 }
 .v-text-field .v-input__details {
   display: none;
-}
-/* Loading */
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 9999;
 }
 
 /* Fade transitions */
@@ -141,6 +126,11 @@ body {
 .fade-up-leave-to {
   transform: translateY(30px);
 }
+
+.v-application--wrap {
+  transition: none !important;
+}
+
 @media (max-width: 600px) {
   .main-container {
     padding: 0;

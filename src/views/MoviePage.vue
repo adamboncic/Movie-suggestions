@@ -30,19 +30,13 @@ export default {
 
     onMounted(() => {
       fetchMovieData(route.params.id);
-      scrollToTop()
     });
 
     watch(() => route.params.id, (newId) => {
       fetchMovieData(newId);
-      scrollToTop()
     });
 
-    const scrollToTop = () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
-    return { movieStore, scrollToTop };
+    return { movieStore };
   }
 }
 </script>
